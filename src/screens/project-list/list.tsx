@@ -1,4 +1,20 @@
-export const ListTable = ({ list, userList }) => {
+interface Projects {
+  id: number;
+  name: string;
+  personId: number;
+  organization: string;
+}
+export interface User {
+  id: number;
+  name: string;
+}
+
+interface listProps {
+  list: Projects[];
+  userList: User[];
+}
+
+export const ListTable = ({ list, userList }: listProps) => {
   console.log(list, userList);
   return (
     <div>

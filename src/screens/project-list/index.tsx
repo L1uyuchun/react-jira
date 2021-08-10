@@ -1,4 +1,4 @@
-import { cleanObject } from "../../utils/index";
+import { cleanObject } from "../../utils";
 import { useMount, useDebounce } from "../../utils/custom-hooks";
 import { SearchPanel } from "./search-panel";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ const querystring = require("querystring");
 export const ProjectListScreen = () => {
   const [params, setParams] = useState({
     name: "",
-    personId: "",
+    personId: 0,
   });
   const debounceParams = useDebounce(params, 500);
   const [list, setList] = useState([]);
