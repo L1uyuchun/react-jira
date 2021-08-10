@@ -1,4 +1,4 @@
-export const isFalsy = (value: string | number) =>
+export const isFalsy: (value: string | number) => Boolean = (value) =>
   value === 0 ? false : !value;
 
 export const cleanObject = (object: object) => {
