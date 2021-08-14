@@ -7,7 +7,7 @@ const querystring = require("querystring");
 export const ProjectListScreen = () => {
   const [params, setParams] = useState({
     name: "",
-    personId: 0,
+    personId: "",
   });
   const debounceParams = useDebounce(params, 500);
   const [list, setList] = useState([]);

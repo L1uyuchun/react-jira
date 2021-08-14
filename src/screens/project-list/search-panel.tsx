@@ -2,7 +2,7 @@ import { User } from "./list";
 interface SearchPanelProps {
   params: {
     name: string;
-    personId: number;
+    personId: string;
   };
   setParams: (params: SearchPanelProps["params"]) => void;
   userList: User[];
@@ -28,10 +28,9 @@ export const SearchPanel = ({
         <select
           value={params.personId}
           onChange={(e) => {
-            console.log(e.target.value);
             setParams({
               ...params,
-              personId: Number(e.target.value),
+              personId: e.target.value,
             });
           }}
         >

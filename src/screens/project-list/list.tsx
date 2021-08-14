@@ -15,7 +15,6 @@ interface listProps {
 }
 
 export const ListTable = ({ list, userList }: listProps) => {
-  console.log(list, userList);
   return (
     <div>
       <table>
