@@ -1,5 +1,5 @@
 import * as AuthCheck from "../utils/auth-provider";
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 
 interface loginParams {
   username: string;
@@ -18,6 +18,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (params: loginParams) => AuthCheck.login(params).then(setUser);
   const loginOut = () => AuthCheck.loginOut().then(() => setUser(null));
 
+  useEffect(() => {
+    AuthCheck.isLogin().then(setUser);
+  }, []);
   return (
     <AuthContext.Provider value={{ user, login, loginOut }}>
       {children}

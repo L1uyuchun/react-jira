@@ -1,45 +1,48 @@
 import { cleanObject } from "../../utils";
-import { useMount, useDebounce } from "../../utils/custom-hooks";
+import { useMount } from "../../utils/custom-hooks";
 import { SearchPanel } from "./search-panel";
 import { useEffect, useState } from "react";
 import { ListTable } from "./list";
-const querystring = require("querystring");
+import { useHttp } from "../../utils/http";
+let signalArr: AbortController[] = [];
 export const ProjectListScreen = () => {
   const [params, setParams] = useState({
     name: "",
     personId: "",
   });
-  const debounceParams = useDebounce(params, 500);
+  // const debounceParams = useDebounce(params, 500);
   const [list, setList] = useState([]);
   const [userList, setUserList] = useState([]);
+  const http = useHttp();
 
   useMount(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users`).then(async (response) => {
-      if (response.ok) {
-        setUserList(await response.json());
-      }
+    http("users").then((data) => {
+      setUserList(data);
     });
   });
 
   useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_API_URL}/projects?${querystring.stringify(
-        cleanObject(debounceParams)
-      )}`
-    ).then(async (response) => {
-      if (response.ok) {
-        setList(await response.json());
-      }
-    });
-  }, [debounceParams]);
+    if (signalArr.length) {
+      signalArr.forEach((item) => {
+        item.abort();
+      });
+    }
+    let controller = new AbortController();
+    // let signal = controller.signal;
+    signalArr.push(controller);
+    http("projects", { data: cleanObject(params), signal: controller.signal })
+      .then((data) => {
+        setList(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // eslint-disable-next-line
+  }, [params]);
   return (
     <div>
-      <SearchPanel
-        params={params}
-        setParams={setParams}
-        userList={userList}
-      ></SearchPanel>
-      <ListTable list={list} userList={userList}></ListTable>
+      <SearchPanel params={params} setParams={setParams} userList={userList} />
+      <ListTable list={list} userList={userList} />
     </div>
   );
 };

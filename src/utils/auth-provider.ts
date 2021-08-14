@@ -1,4 +1,6 @@
 // 阵势的开发环境中，如果使用了fireBase这种第三方auth服务的话，本文件不需要自己开发
+import { http } from "./http";
+
 export interface User {
   name: string;
   personId: number;
@@ -26,19 +28,21 @@ class StorageOperate {
 const loginStorage = new StorageOperate({} as User);
 
 export const login = (param: { username: string; password: string }) => {
-  return fetch(`${process.env.REACT_APP_API_URL}/login`, {
+  return http("login", {
     method: "POST",
     headers: {
       "Content-type": "application/json;charset=utf-8",
     },
-    body: JSON.stringify(param),
-  }).then(async (response) => {
-    if (response.ok) {
-      // setUserList(await response.json());
-      return loginStorage.setToken((await response.json()).data);
-    } else {
-      return Promise.reject(param);
-    }
+    data: param,
+  }).then((data) => {
+    // setUserList(await response.json());
+    return loginStorage.setToken(data);
+  });
+};
+export const isLogin = () => {
+  const defaultToken = loginStorage.getToken() || "";
+  return http("islogin", { token: defaultToken }).then((res) => {
+    return res;
   });
 };
 

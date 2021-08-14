@@ -34,7 +34,7 @@ export const SearchPanel = ({
             });
           }}
         >
-          <option value={0}>负责人</option>
+          <option value={""}>负责人</option>
           {userList.map((item) => (
             <option value={item.id} key={item.id}>
               {item.name}
