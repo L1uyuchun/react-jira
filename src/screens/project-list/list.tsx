@@ -1,9 +1,12 @@
+import { Table } from "antd";
+
 interface Projects {
   id: number;
   name: string;
   personId: number;
   organization: string;
 }
+
 export interface User {
   id: number;
   name: string;
@@ -15,29 +18,27 @@ interface listProps {
 }
 
 export const ListTable = ({ list, userList }: listProps) => {
+  const columns = [
+    {
+      title: "名称",
+      dataIndex: "name",
+    },
+    {
+      title: "负责人",
+      dataIndex: "organization",
+      render: (value: string, row: Projects) => {
+        return userList.filter((user) => user.id === row.personId)[0]?.name;
+      },
+    },
+  ];
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>名称</th>
-            <th>负责人</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((project) => (
-            <tr key={project.id}>
-              <td>{project.name}</td>
-              <td>
-                {
-                  userList.filter((user) => user.id === project.personId)[0]
-                    ?.name
-                }
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div style={{ width: "600px" }}>
+      <Table
+        columns={columns}
+        dataSource={list}
+        rowKey={"id"}
+        pagination={false}
+      />
     </div>
   );
 };
