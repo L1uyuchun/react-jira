@@ -1,5 +1,5 @@
-import { loginOut } from "./auth-provider";
 import { useAuth } from "../context/auth-context";
+import { message } from "antd";
 const queryString = require("querystring");
 
 const baseUrl = process.env.REACT_APP_API_URL;
@@ -41,9 +41,12 @@ export const http = async (
       // window.location.reload()
       return Promise.reject("请重新登录");
     }
-    if (response.ok) {
+    if (response.ok && res.code === 200) {
       return res.data;
     } else {
+      if (res.data?.msg) {
+        message.error(res.data.msg);
+      }
       return Promise.reject(data);
     }
   });

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export const useMount = (callback: () => void) => {
   useEffect(() => {
     callback();
+    // TODO useCallBack和useMemo的用法
     // eslint-disable-next-line
   }, []);
 };

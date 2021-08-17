@@ -1,3 +1,5 @@
+const { users, projects } = require("./data");
+
 module.exports = (req, res, next) => {
   if (req.method === "POST" && req.path === "/login") {
     if (req.body.username === "admin" && req.body.password === "admin") {
@@ -40,6 +42,35 @@ module.exports = (req, res, next) => {
         },
       });
     }
+  } else if (req.method === "GET" && req.path === "/users") {
+    res.json({
+      code: 200,
+      data: users,
+    });
+  } else if (req.method === "GET" && req.path === "/projects") {
+    const params = req.query;
+    console.log(params);
+    const allData = projects;
+    let result = [];
+    if (!params.name && !params.personId) {
+      result = allData;
+    } else if (params.name && !params.personId) {
+      result = allData.filter((item) => item.name.indexOf(params.name) !== -1);
+    } else if (!params.name && params.personId) {
+      result = allData.filter(
+        (item) => item.personId === Number(params.personId)
+      );
+    } else {
+      result = allData.filter(
+        (item) =>
+          item.personId === Number(params.personId) &&
+          item.name.indexOf(params.name) !== -1
+      );
+    }
+    res.json({
+      code: 200,
+      data: result,
+    });
   }
   next();
 };

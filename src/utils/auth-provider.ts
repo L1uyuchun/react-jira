@@ -35,6 +35,7 @@ export const login = (param: { username: string; password: string }) => {
     },
     data: param,
   }).then((data) => {
+    console.log(data);
     // setUserList(await response.json());
     return loginStorage.setToken(data);
   });

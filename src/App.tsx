@@ -1,6 +1,5 @@
 import React from "react";
 import "antd/dist/antd.less";
-import "./App.less";
 import { ProjectListScreen } from "./screens/project-list";
 // import { TsReactTest } from "./tasks/use-array/index";
 import { Login } from "./screens/login";

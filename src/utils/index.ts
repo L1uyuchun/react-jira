@@ -1,13 +1,11 @@
-export const isFalsy: (value: string | number) => Boolean = (value) =>
-  value === 0 ? false : !value;
+export const isFalsy: (value: unknown) => Boolean = (value) =>
+  value === "" || value === undefined || value === null ? true : false;
 
-export const cleanObject = (object: object) => {
+export const cleanObject = (object: { [key: string]: unknown }) => {
   const result = { ...object };
-  Object.keys(result).forEach((key) => {
-    // @ts-ignore
+  Object.keys(result).forEach((key: string) => {
     const value = result[key];
     if (isFalsy(value)) {
-      // @ts-ignore
       delete result[key];
     }
   });
