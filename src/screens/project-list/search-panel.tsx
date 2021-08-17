@@ -30,6 +30,8 @@ export const SearchPanel = ({
       personId: value,
     });
   };
+  // @ts-ignore
+  // @ts-ignore
   return (
     <SearchWraper>
       <Title>项目列表</Title>
@@ -47,9 +49,9 @@ export const SearchPanel = ({
           style={{ width: 120 }}
           onChange={handleChangeSelect}
         >
-          <Option value={""}>负责人</Option>
+          {userList ? <Option value={""}>负责人</Option> : ""}
           {userList.map((item) => (
-            <Option value={item.id} key={item.id}>
+            <Option value={item?.id} key={item.id}>
               {item.name}
             </Option>
           ))}

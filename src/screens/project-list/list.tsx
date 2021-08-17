@@ -1,25 +1,26 @@
 import { Table } from "antd";
 import dayjs from "dayjs";
 import styled from "@emotion/styled";
+import { TableProps } from "antd/lib/table/Table";
 
-interface Projects {
+export interface Projects {
   id: number;
-  name: string;
-  personId: number;
-  organization: string;
+  name?: string;
+  personId?: number;
+  organization?: string;
 }
 
 export interface User {
   id: number;
-  name: string;
+  name?: string;
 }
 
-interface listProps {
+interface listProps extends TableProps<Projects> {
   list: Projects[];
   userList: User[];
 }
 
-export const ListTable = ({ list, userList }: listProps) => {
+export const ListTable = ({ list, userList, ...props }: listProps) => {
   const columns = [
     {
       title: "名称",
@@ -56,6 +57,7 @@ export const ListTable = ({ list, userList }: listProps) => {
         dataSource={list}
         rowKey={"id"}
         pagination={false}
+        {...props}
       />
     </ProjectList>
   );

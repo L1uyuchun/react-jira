@@ -1,53 +1,31 @@
 /** @jsxImportSource @emotion/react */
 // import { css, jsx } from '@emotion/react'
-import { cleanObject } from "../../utils";
-import { useMount } from "../../utils/custom-hooks";
 import { SearchPanel } from "./search-panel";
-import { useEffect, useState } from "react";
-import { ListTable } from "./list";
-import { useHttp } from "../../utils/http";
+import { useState } from "react";
+import { ListTable, User } from "./list";
 import { Row } from "@/components/Row";
 import { Button, Dropdown, Menu } from "antd";
 import styled from "@emotion/styled";
 import { useAuth } from "@/context/auth-context";
 import { ReactComponent as LogoSvg } from "@/assets/images/logo.svg";
+import {
+  useRequstProjects,
+  useRequstUsers,
+} from "@/screens/project-list/api-custom-hooks";
+import { useMount } from "@/utils/custom-hooks";
+import { http } from "@/utils/http";
+import { useAsync } from "@/utils/use-async";
 
-let signalArr: AbortController[] = [];
 export const ProjectListScreen = () => {
   const [params, setParams] = useState({
     name: "",
     personId: "",
   });
-  // const debounceParams = useDebounce(params, 500);
-  const [list, setList] = useState([]);
-  const [userList, setUserList] = useState([]);
-  const http = useHttp();
   const { user } = useAuth();
+  const { data: userList } = useRequstUsers();
+  const { data: list, loading } = useRequstProjects(params);
+  console.log("render");
 
-  useMount(() => {
-    http("users").then((data) => {
-      setUserList(data);
-    });
-  });
-
-  useEffect(() => {
-    if (signalArr.length) {
-      signalArr.forEach((item) => {
-        item.abort();
-      });
-    }
-    let controller = new AbortController();
-    // let signal = controller.signal;
-    signalArr.push(controller);
-    http("projects", { data: cleanObject(params), signal: controller.signal })
-      .then((data) => {
-        setList(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // eslint-disable-next-line
-  }, [params]);
   return (
     <ProjectPage>
       <HeaderRow justifyContent={"space-between"} alignItems={"center"}>
@@ -84,8 +62,16 @@ export const ProjectListScreen = () => {
           </Button>
         </Dropdown>
       </HeaderRow>
-      <SearchPanel params={params} setParams={setParams} userList={userList} />
-      <ListTable list={list} userList={userList} />
+      <SearchPanel
+        params={params}
+        setParams={setParams}
+        userList={userList || []}
+      />
+      <ListTable
+        list={list || []}
+        userList={userList || []}
+        loading={loading}
+      />
     </ProjectPage>
   );
 };
