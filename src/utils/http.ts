@@ -34,22 +34,27 @@ export const http = async (
     fetchConfig.body = JSON.stringify(data || {});
   }
 
-  return window.fetch(apiUrl, fetchConfig).then(async (response) => {
-    const res = await response.json();
-    if (res.code === 401) {
-      // await loginOut()
-      // window.location.reload()
-      return Promise.reject("请重新登录");
-    }
-    if (response.ok && res.code === 200) {
-      return res.data;
-    } else {
-      if (res.data?.msg) {
-        message.error(res.data.msg);
+  return window
+    .fetch(apiUrl, fetchConfig)
+    .then(async (response) => {
+      const res = await response.json();
+      if (res.code === 401) {
+        // await loginOut()
+        // window.location.reload()
+        return Promise.reject("请重新登录");
       }
-      return Promise.reject(res.data);
-    }
-  });
+      if (response.ok && res.code === 200) {
+        return res.data;
+      } else {
+        if (res.data?.msg) {
+          message.error(res.data.msg);
+        }
+        return Promise.reject(res.data);
+      }
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
 };
 export const useHttp = () => {
   const { user } = useAuth();

@@ -44,9 +44,7 @@ export const login = (param: { username: string; password: string }) => {
 };
 export const isLogin = () => {
   const defaultToken = loginStorage.getToken() || "";
-  return http("islogin", { token: defaultToken }).then((res) => {
-    return res;
-  });
+  return http("islogin", { token: defaultToken });
 };
 
 export const loginOut = async () => loginStorage.removeItem();

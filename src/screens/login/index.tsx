@@ -3,7 +3,7 @@ import { useAuth } from "../../context/auth-context";
 import { Form, Input, Button, Divider, Typography } from "antd";
 import styled from "@emotion/styled";
 import loginBgImg from "@/assets/images/loginBg.png";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAsync } from "@/utils/use-async";
 
 export const Login = () => {
@@ -19,8 +19,10 @@ export const Login = () => {
   const requestLogin = (params: { username: string; password: string }) => {
     run(login(params));
   };
+  const value: any = undefined;
   return (
     <LoginPage>
+      <div>{value.type}</div>
       {/*<Header>*/}
       {/*  <LogoIcon width={'4rem'} height={'3rem'}/>*/}
       {/*  <span css={{width: '100px', fontSize: '2.4rem'}}>jira</span>*/}
@@ -68,7 +70,8 @@ export const Login = () => {
 
 const LoginPage = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  position: relative;
   background-attachment: scroll;
   background-repeat: no-repeat;
   background-size: cover;

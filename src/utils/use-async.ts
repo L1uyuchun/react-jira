@@ -24,12 +24,13 @@ export const useAsync = <T>() => {
     });
     setLoading(true);
     return promiseFun
-      .then((data: T) => {
+      .then((data) => {
         setHttpInfo({
           ...httpInfo,
           data,
           status: "success",
         });
+        return data;
       })
       .catch((err) => {
         setHttpInfo({
@@ -37,6 +38,7 @@ export const useAsync = <T>() => {
           error: err,
           status: "error",
         });
+        return Promise.reject(err);
       })
       .finally(() => {
         setLoading(false);
