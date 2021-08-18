@@ -1,21 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { useAuth } from "../../context/auth-context";
-import { Form, Input, Button, Divider } from "antd";
+import { Form, Input, Button, Divider, Typography } from "antd";
 import styled from "@emotion/styled";
 import loginBgImg from "@/assets/images/loginBg.png";
+import { useState } from "react";
+import { useAsync } from "@/utils/use-async";
 
 export const Login = () => {
   const { login } = useAuth();
+  // const [err, setErr] = useState<{
+  //   msg?: string
+  // } | null>(null)
+  const { loading, run, error: err } = useAsync();
 
   const handleOnSubmit = (values: any) => {
     requestLogin(values);
   };
-  const requestLogin = (params: {
-    username: string;
-    password: string;
-  }): void => {
-    // console.log(login(params))
-    login(params);
+  const requestLogin = (params: { username: string; password: string }) => {
+    run(login(params));
   };
   return (
     <LoginPage>
@@ -23,6 +25,7 @@ export const Login = () => {
       {/*  <LogoIcon width={'4rem'} height={'3rem'}/>*/}
       {/*  <span css={{width: '100px', fontSize: '2.4rem'}}>jira</span>*/}
       {/*</Header>*/}
+      {/*{err ? ( <Typography.Text type="danger">{err?.msg}</Typography.Text>) : ''}*/}
       <CardContainer>
         <Form
           onFinish={handleOnSubmit}
@@ -49,7 +52,7 @@ export const Login = () => {
               },
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               登录
             </Button>
           </Form.Item>

@@ -34,11 +34,13 @@ export const login = (param: { username: string; password: string }) => {
       "Content-type": "application/json;charset=utf-8",
     },
     data: param,
-  }).then((data) => {
-    console.log(data);
-    // setUserList(await response.json());
-    return loginStorage.setToken(data);
-  });
+  })
+    .then((data) => {
+      return loginStorage.setToken(data);
+    })
+    .catch((err) => {
+      return Promise.reject(err);
+    });
 };
 export const isLogin = () => {
   const defaultToken = loginStorage.getToken() || "";

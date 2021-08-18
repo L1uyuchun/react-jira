@@ -1,12 +1,12 @@
 import { useState } from "react";
 interface asyncpParamsProps<D> {
   data: D | null;
-  error: Boolean;
+  error: { msg?: string };
   status: "idle" | "loading" | "success" | "error";
 }
 const initState: asyncpParamsProps<null> = {
   data: null,
-  error: false,
+  error: {},
   status: "idle",
 };
 export const useAsync = <T>() => {
@@ -34,7 +34,7 @@ export const useAsync = <T>() => {
       .catch((err) => {
         setHttpInfo({
           ...httpInfo,
-          error: true,
+          error: err,
           status: "error",
         });
       })

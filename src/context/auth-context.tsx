@@ -15,7 +15,10 @@ AuthContext.displayName = "authContext";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AuthCheck.User | null>(null);
-  const login = (params: loginParams) => AuthCheck.login(params).then(setUser);
+  const login = (params: loginParams) =>
+    AuthCheck.login(params).then((user) => {
+      setUser(user);
+    });
   const loginOut = () => AuthCheck.loginOut().then(() => setUser(null));
 
   useEffect(() => {
