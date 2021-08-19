@@ -15,8 +15,10 @@ import {
 import { useMount } from "@/utils/custom-hooks";
 import { http } from "@/utils/http";
 import { useAsync } from "@/utils/use-async";
+import { useDocumentTitle } from "@/utils";
 
 export const ProjectListScreen = () => {
+  useDocumentTitle("项目列表", false);
   const [params, setParams] = useState({
     name: "",
     personId: "",
@@ -24,7 +26,10 @@ export const ProjectListScreen = () => {
   const { user } = useAuth();
   const { data: userList } = useRequstUsers();
   const { data: list, loading } = useRequstProjects(params);
-  console.log("render");
+  const { loginOut } = useAuth();
+  const handleLoginOut = () => {
+    loginOut();
+  };
 
   return (
     <ProjectPage>
@@ -45,13 +50,7 @@ export const ProjectListScreen = () => {
           overlay={
             <Menu>
               <Menu.Item>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.antgroup.com"
-                >
-                  退出账号
-                </a>
+                <span onClick={handleLoginOut}>退出账号</span>
               </Menu.Item>
             </Menu>
           }

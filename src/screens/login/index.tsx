@@ -5,6 +5,7 @@ import styled from "@emotion/styled";
 import loginBgImg from "@/assets/images/loginBg.png";
 import React, { useState } from "react";
 import { useAsync } from "@/utils/use-async";
+import { useDocumentTitle } from "@/utils";
 
 export const Login = () => {
   const { login } = useAuth();
@@ -12,6 +13,7 @@ export const Login = () => {
   //   msg?: string
   // } | null>(null)
   const { loading, run, error: err } = useAsync();
+  // useDocumentTitle('登录')
 
   const handleOnSubmit = (values: any) => {
     requestLogin(values);
@@ -19,10 +21,8 @@ export const Login = () => {
   const requestLogin = (params: { username: string; password: string }) => {
     run(login(params));
   };
-  const value: any = undefined;
   return (
     <LoginPage>
-      <div>{value.type}</div>
       {/*<Header>*/}
       {/*  <LogoIcon width={'4rem'} height={'3rem'}/>*/}
       {/*  <span css={{width: '100px', fontSize: '2.4rem'}}>jira</span>*/}
