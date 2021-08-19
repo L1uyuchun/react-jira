@@ -2,6 +2,7 @@ import { Table } from "antd";
 import dayjs from "dayjs";
 import styled from "@emotion/styled";
 import { TableProps } from "antd/lib/table/Table";
+import { Link } from "react-router-dom";
 
 export interface Projects {
   id: number;
@@ -26,6 +27,9 @@ export const ListTable = ({ list, userList, ...props }: listProps) => {
       title: "名称",
       dataIndex: "name",
       width: 400,
+      render: (value: string, row: Projects) => {
+        return <Link to={`/project/${row.id}`}>{value}</Link>;
+      },
     },
     {
       title: "部门",

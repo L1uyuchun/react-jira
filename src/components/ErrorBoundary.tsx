@@ -1,9 +1,9 @@
-import React, { ErrorInfo, ReactNode, ReactPropTypes } from "react";
+import React, { ErrorInfo, ReactNode } from "react";
 import { FullPageWraper } from "@/components/Loading";
 interface errorBoundaryProps {
   children?: ReactNode;
 }
-type FallBackRender = (props: { error: Error | null }) => React.ReactElement;
+// type FallBackRender = (props: { error: Error | null }) => React.ReactElement;
 export class ErrorBoundary extends React.Component<
   errorBoundaryProps,
   { error: Error | null }

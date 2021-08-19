@@ -4,7 +4,7 @@ import { Projects } from "./list";
 import { User } from "./list";
 import { cleanObject } from "@/utils";
 import { useMount } from "@/utils/custom-hooks";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 export const useRequstUsers = () => {
   const { run, data } = useAsync<User[]>();

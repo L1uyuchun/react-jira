@@ -1,18 +1,17 @@
 /** @jsxImportSource @emotion/react */
 import { useAuth } from "../../context/auth-context";
-import { Form, Input, Button, Divider, Typography } from "antd";
+import { Form, Input, Button, Divider } from "antd";
 import styled from "@emotion/styled";
 import loginBgImg from "@/assets/images/loginBg.png";
-import React, { useState } from "react";
+import React from "react";
 import { useAsync } from "@/utils/use-async";
-import { useDocumentTitle } from "@/utils";
 
 export const Login = () => {
   const { login } = useAuth();
   // const [err, setErr] = useState<{
   //   msg?: string
   // } | null>(null)
-  const { loading, run, error: err } = useAsync();
+  const { loading, run } = useAsync();
   // useDocumentTitle('登录')
 
   const handleOnSubmit = (values: any) => {

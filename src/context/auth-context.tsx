@@ -1,18 +1,8 @@
 import * as AuthCheck from "../utils/auth-provider";
-import React, {
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { useAsync } from "@/utils/use-async";
-import { http } from "@/utils/http";
-import { set } from "husky";
 import { Spin } from "antd";
-import styled from "@emotion/styled";
 import { FullPageWraper } from "@/components/Loading";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 interface loginParams {
   username: string;
@@ -48,6 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       //    console.log(err)
       //  })
     } catch (err) {}
+    // eslint-disable-next-line
   }, []);
   return (
     <AuthContext.Provider value={{ user, login, loginOut }}>
@@ -69,7 +60,3 @@ export const useAuth = () => {
   }
   return context;
 };
-const SpinComtainner = styled(Spin)`
-  width: 100%;
-  height: 100%;
-`;

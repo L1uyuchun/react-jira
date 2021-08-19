@@ -23,7 +23,8 @@ module.exports = (req, res, next) => {
     }
   } else if (req.method === "GET" && req.path === "/islogin") {
     // 模拟登录失效，有50%的机会失效
-    const ratio = Math.random();
+    // const ratio = Math.random();
+    const ratio = 1;
     if (req.headers.authorization === "Bearer 123" && ratio >= 0.5) {
       res.json({
         code: 200,
