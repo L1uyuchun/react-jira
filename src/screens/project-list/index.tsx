@@ -8,7 +8,7 @@ import {
   useRequstProjects,
   useRequstUsers,
 } from "@/screens/project-list/api-custom-hooks";
-import { useDocumentTitle } from "@/utils";
+import { cleanObject, useDocumentTitle } from "@/utils";
 import { useUrlQueryParams } from "@/utils/use-url-params";
 
 export const ProjectList = () => {
@@ -21,13 +21,14 @@ export const ProjectList = () => {
     "name",
     "personId",
   ]);
+  const _params = { ...params, personId: Number(params.personId) || undefined };
   // console.log(getSearchParams)
   const { data: userList } = useRequstUsers();
   const { data: list, loading } = useRequstProjects(params);
   return (
     <ProjectPage>
       <SearchPanel
-        params={params}
+        params={_params}
         setParams={setSearchPrams}
         userList={userList || []}
       />

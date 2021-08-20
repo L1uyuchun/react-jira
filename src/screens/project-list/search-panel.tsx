@@ -2,11 +2,12 @@ import { ChangeEvent } from "react";
 import { User } from "./list";
 import { Input, Select } from "antd";
 import styled from "@emotion/styled";
+import { SelectBiz } from "@/components/select-biz";
 const { Option } = Select;
 interface SearchPanelProps {
   params: {
     name?: string;
-    personId?: string;
+    personId?: number;
   };
   setParams: (params: SearchPanelProps["params"]) => void;
   userList: User[];
@@ -23,8 +24,7 @@ export const SearchPanel = ({
       name: e.target.value,
     });
   };
-  const handleChangeSelect = (value: string) => {
-    console.log(value);
+  const handleChangeSelect = (value: number | undefined) => {
     setParams({
       ...params,
       personId: value,
@@ -45,18 +45,28 @@ export const SearchPanel = ({
             changeInputValue(e);
           }}
         />
-        <Select
+        <SelectBiz
           value={params.personId}
           style={{ width: 120 }}
           onChange={handleChangeSelect}
-        >
-          {userList ? <Option value={""}>负责人</Option> : ""}
-          {userList.map((item) => (
-            <Option value={item?.id.toString()} key={item.id}>
-              {item.name}
-            </Option>
-          ))}
-        </Select>
+          options={userList}
+          optionProps={{
+            valueKey: "id",
+            textKey: "name",
+            key: "id",
+          }}
+          defaultOptionText={"负责人"}
+        />
+        {/*<Select*/}
+        {/*  */}
+        {/*>*/}
+        {/*  {userList ? <Option value={""}>负责人</Option> : ""}*/}
+        {/*  {userList.map((item) => (*/}
+        {/*    <Option value={item?.id.toString()} key={item.id}>*/}
+        {/*      {item.name}*/}
+        {/*    </Option>*/}
+        {/*  ))}*/}
+        {/*</Select>*/}
       </SearchBox>
     </SearchWraper>
   );
