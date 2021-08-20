@@ -5,8 +5,8 @@ import styled from "@emotion/styled";
 const { Option } = Select;
 interface SearchPanelProps {
   params: {
-    name: string;
-    personId: string;
+    name?: string;
+    personId?: string;
   };
   setParams: (params: SearchPanelProps["params"]) => void;
   userList: User[];
@@ -37,6 +37,7 @@ export const SearchPanel = ({
       <Title>项目列表</Title>
       <SearchBox>
         <InputCom
+          value={params.name}
           allowClear
           placeholder="请输入项目名称"
           maxLength={50}
@@ -51,7 +52,7 @@ export const SearchPanel = ({
         >
           {userList ? <Option value={""}>负责人</Option> : ""}
           {userList.map((item) => (
-            <Option value={item?.id} key={item.id}>
+            <Option value={item?.id.toString()} key={item.id}>
               {item.name}
             </Option>
           ))}
