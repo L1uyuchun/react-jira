@@ -57,16 +57,6 @@ export const SearchPanel = ({
           }}
           defaultOptionText={"负责人"}
         />
-        {/*<Select*/}
-        {/*  */}
-        {/*>*/}
-        {/*  {userList ? <Option value={""}>负责人</Option> : ""}*/}
-        {/*  {userList.map((item) => (*/}
-        {/*    <Option value={item?.id.toString()} key={item.id}>*/}
-        {/*      {item.name}*/}
-        {/*    </Option>*/}
-        {/*  ))}*/}
-        {/*</Select>*/}
       </SearchBox>
     </SearchWraper>
   );

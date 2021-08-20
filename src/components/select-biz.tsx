@@ -36,14 +36,7 @@ export const SelectBiz = (props: bizSelectProps) => {
     <Select value={toNumber(value)} onChange={handleChange} {...restProps}>
       {defaultOptionText ? <Option value={0}>{defaultOptionText}</Option> : ""}
       {(options || []).map((item) => (
-        <Option
-          // @ts-ignore
-          key={item[key]}
-          // @ts-ignore
-          value={item[valueKey]}
-          {...restOptionProps}
-        >
-          {/*// @ts-ignore*/}
+        <Option key={item[key]} value={item[valueKey]} {...restOptionProps}>
           {item[textKey]}
         </Option>
       ))}
