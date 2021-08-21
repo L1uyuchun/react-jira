@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import styled from "@emotion/styled";
 import { TableProps } from "antd/lib/table/Table";
 import { Link } from "react-router-dom";
+import { Star } from "@/components/Star";
+import { useEditProject } from "@/screens/project-list/api-custom-hooks";
 
 export interface Projects {
   id: number;
@@ -22,11 +24,30 @@ interface listProps extends TableProps<Projects> {
 }
 
 export const ListTable = ({ list, userList, ...props }: listProps) => {
+  const { projectEdit, data, loading, status } = useEditProject();
+  const editIsCollection = (
+    value: string | number | null | undefined | [] | {},
+    id: number
+  ) => {
+    console.log(id, value);
+    projectEdit({ id, field: "isCollection", value });
+  };
   const columns = [
+    {
+      dataIndex: "isCollection",
+      render: (value: string, row: Projects) => {
+        return (
+          <Star
+            checked={!!value}
+            onChange={(value: number) => editIsCollection(value, row.id)}
+          ></Star>
+        );
+      },
+      title: () => <Star checked={true} disabled></Star>,
+    },
     {
       title: "名称",
       dataIndex: "name",
-      width: 400,
       render: (value: string, row: Projects) => {
         return <Link to={`/project/${row.id}`}>{value}</Link>;
       },
@@ -34,12 +55,10 @@ export const ListTable = ({ list, userList, ...props }: listProps) => {
     {
       title: "部门",
       dataIndex: "organization",
-      width: 400,
     },
     {
       title: "负责人",
       dataIndex: "organization",
-      width: 400,
       render: (value: string, row: Projects) => {
         return userList.filter((user) => user.id === row.personId)[0]?.name;
       },

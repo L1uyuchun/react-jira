@@ -23,6 +23,7 @@ exports.projects = [
     personId: 1,
     organization: "外卖组",
     creatTime: 1629163924000,
+    isCollection: 0,
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ exports.projects = [
     personId: 2,
     organization: "团购组",
     creatTime: 1629163924000,
+    isCollection: 0,
   },
   {
     id: 3,
@@ -37,6 +39,7 @@ exports.projects = [
     personId: 2,
     organization: "物料组",
     creatTime: 1629163924000,
+    isCollection: 0,
   },
   {
     id: 4,
@@ -44,6 +47,7 @@ exports.projects = [
     personId: 3,
     organization: "总部组",
     creatTime: 1629163924000,
+    isCollection: 0,
   },
   {
     id: 5,
@@ -51,5 +55,6 @@ exports.projects = [
     personId: 4,
     organization: "送餐组",
     creatTime: 1629163924000,
+    isCollection: 0,
   },
 ];

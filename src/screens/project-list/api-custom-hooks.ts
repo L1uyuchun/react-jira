@@ -1,5 +1,5 @@
 import { useAsync } from "@/utils/use-async";
-import { http } from "@/utils/http";
+import { http, useHttp } from "@/utils/http";
 import { Projects } from "./list";
 import { User } from "./list";
 import { cleanObject } from "@/utils";
@@ -40,4 +40,18 @@ export const useRequstProjects = (params: {}) => {
     status,
     loading,
   };
+};
+
+export const useEditProject = () => {
+  const http = useHttp();
+  const { data, status, loading, run } = useAsync();
+  const projectEdit = <K>(params: { id: number; field: string; value: K }) => {
+    return run(
+      http(`project/edit`, {
+        data: params,
+        method: "POST",
+      })
+    );
+  };
+  return { projectEdit, data, loading, status };
 };

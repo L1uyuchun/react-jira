@@ -50,7 +50,6 @@ module.exports = (req, res, next) => {
     });
   } else if (req.method === "GET" && req.path === "/projects") {
     const params = req.query;
-    console.log(params);
     const allData = projects;
     let result = [];
     if (!params.name && !params.personId) {
@@ -71,6 +70,19 @@ module.exports = (req, res, next) => {
     res.json({
       code: 200,
       data: result,
+    });
+  } else if (req.method === "POST" && req.path === `/project/edit`) {
+    console.log(req.body);
+    const params = req.body;
+    projects.some((item, index) => {
+      if (item.id === params.id) {
+        projects[index][params.field] = params.value;
+        return true;
+      }
+    });
+    res.json({
+      code: 200,
+      data: [],
     });
   }
   next();
