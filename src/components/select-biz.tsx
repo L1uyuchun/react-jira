@@ -5,19 +5,17 @@ const { Option } = Select;
 type SelectProps = React.ComponentProps<typeof Select>;
 type optionPropsKey = "valueKey" | "textKey";
 
-interface bizSelectProps
+interface bizSelectProps<K>
   extends Omit<SelectProps, "onChange" | "options" | "defaultValue"> {
   value: number | string | undefined | number[] | string[];
-  options: any[];
+  options: K[];
   optionProps: {
-    valueKey: string;
-    textKey: string;
-    key: string;
+    [key in string]: keyof K;
   };
   defaultOptionText: string;
   onChange: (value: number | undefined) => void;
 }
-export const SelectBiz = (props: bizSelectProps) => {
+export const SelectBiz = (props: bizSelectProps<User>) => {
   const {
     value,
     options,
@@ -30,7 +28,6 @@ export const SelectBiz = (props: bizSelectProps) => {
   const handleChange = (value: number) => {
     onChange(toNumber(value) || undefined);
   };
-  console.log(optionProps, options);
 
   return (
     <Select value={toNumber(value)} onChange={handleChange} {...restProps}>

@@ -30,8 +30,6 @@ export const SearchPanel = ({
       personId: value,
     });
   };
-  // @ts-ignore
-  // @ts-ignore
   return (
     <SearchWraper>
       <Title>项目列表</Title>

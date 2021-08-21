@@ -13,7 +13,7 @@ export interface Projects {
 
 export interface User {
   id: number;
-  name?: string;
+  name: string;
 }
 
 interface listProps extends TableProps<Projects> {
