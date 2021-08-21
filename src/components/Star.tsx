@@ -9,7 +9,6 @@ interface starProps extends React.ComponentProps<typeof Rate> {
   onChange?: (value: number) => void | undefined;
 }
 export const Star = ({ checked, onChange, ...restProps }: starProps) => {
-  console.log(checked, onChange);
   return (
     <Rate
       count={1}

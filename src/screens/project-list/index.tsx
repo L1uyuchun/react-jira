@@ -24,7 +24,7 @@ export const ProjectList = () => {
   const _params = { ...params, personId: Number(params.personId) || undefined };
   // console.log(getSearchParams)
   const { data: userList } = useRequstUsers();
-  const { data: list, loading } = useRequstProjects(params);
+  const { data: list, loading, entry } = useRequstProjects(params);
   return (
     <ProjectPage>
       <SearchPanel
@@ -36,6 +36,7 @@ export const ProjectList = () => {
         list={list || []}
         userList={userList || []}
         loading={loading}
+        entry={entry}
       />
     </ProjectPage>
   );

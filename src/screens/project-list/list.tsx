@@ -21,16 +21,18 @@ export interface User {
 interface listProps extends TableProps<Projects> {
   list: Projects[];
   userList: User[];
+  entry: () => void;
 }
 
-export const ListTable = ({ list, userList, ...props }: listProps) => {
+export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
   const { projectEdit, data, loading, status } = useEditProject();
   const editIsCollection = (
     value: string | number | null | undefined | [] | {},
     id: number
   ) => {
-    console.log(id, value);
-    projectEdit({ id, field: "isCollection", value });
+    projectEdit({ id, field: "isCollection", value }).then((res) => {
+      entry();
+    });
   };
   const columns = [
     {
