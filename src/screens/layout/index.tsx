@@ -12,6 +12,8 @@ import { ProjectList } from "@/screens/project-list";
 import { ProjectDetail } from "@/screens/project-detail";
 import { Custom } from "@/screens/custom";
 import { NotFound } from "@/screens/not-found";
+import { useDispatch } from "react-redux";
+import { changeDrawerVisible } from "@/screens/project-list/project-store-slice";
 // const { SubMenu } = Menu;
 
 export const Layout = () => {
@@ -72,6 +74,7 @@ const HeaderCom = () => {
   );
 };
 const ProjectMent = () => {
+  const dispatch = useDispatch();
   const menu = (
     <Menu>
       <Menu.ItemGroup title="收藏项目">
@@ -80,7 +83,9 @@ const ProjectMent = () => {
       </Menu.ItemGroup>
       <Menu.Divider />
       <Menu.Item>
-        <span>新增项目</span>
+        <span onClick={() => dispatch(changeDrawerVisible(true))}>
+          新增项目
+        </span>
       </Menu.Item>
     </Menu>
   );

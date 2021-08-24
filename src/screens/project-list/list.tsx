@@ -1,10 +1,13 @@
-import { Table } from "antd";
+import { Dropdown, Menu, Table } from "antd";
 import dayjs from "dayjs";
 import styled from "@emotion/styled";
 import { TableProps } from "antd/lib/table/Table";
 import { Link } from "react-router-dom";
 import { Star } from "@/components/Star";
 import { useEditProject } from "@/screens/project-list/api-custom-hooks";
+import { EllipsisOutlined } from "@ant-design/icons";
+import { changeDrawerVisible } from "@/screens/project-list/project-store-slice";
+import { useDispatch } from "react-redux";
 
 export interface Projects {
   id: number;
@@ -34,6 +37,7 @@ export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
       entry();
     });
   };
+  const dispatch = useDispatch();
   const columns = [
     {
       dataIndex: "isCollection",
@@ -70,6 +74,24 @@ export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
       dataIndex: "organization",
       render: (value: Date) => {
         return dayjs(value).format("YYYY-MM-DD");
+      },
+    },
+    {
+      render: (value: Date) => {
+        return (
+          <Dropdown
+            overlay={
+              <Menu style={{ width: "100px" }}>
+                <Menu.Item onClick={() => dispatch(changeDrawerVisible(true))}>
+                  编辑
+                </Menu.Item>
+                <Menu.Item>删除</Menu.Item>
+              </Menu>
+            }
+          >
+            <EllipsisOutlined />
+          </Dropdown>
+        );
       },
     },
   ];
