@@ -32,12 +32,15 @@ export const ProjectList = () => {
   //   const entry = () => {}
   //   console.log(_params)
   const { data: list, loading, entry } = useRequstProjects(_params);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   return (
     <ProjectPage>
+      <Button onClick={() => setDrawerVisible(true)}>点击</Button>
       <SearchPanel
         params={_params}
         setParams={setSearchPrams}
         userList={userList || []}
+        addNewProject={() => setDrawerVisible(true)}
       />
       <ListTable
         list={list || []}
@@ -45,7 +48,10 @@ export const ProjectList = () => {
         loading={loading}
         entry={entry}
       />
-      <AddProject></AddProject>
+      <AddProject
+        drawerVisible={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+      ></AddProject>
     </ProjectPage>
   );
 };

@@ -10,17 +10,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import {Custom} from "@/screens/custom";
 // import {ProjectDetail} from "@/screens/project-detail";
 import { Layout } from "@/screens/layout";
-import { Provider } from "react-redux";
-import { store } from "@/store";
 
 function App() {
   const { user } = useAuth();
   return (
-    <Provider store={store}>
-      <ErrorBoundary>
-        <div id="content">{user ? <ViewRoutes /> : <Login />}</div>
-      </ErrorBoundary>
-    </Provider>
+    <ErrorBoundary>
+      <div id="content">{user ? <ViewRoutes /> : <Login />}</div>
+    </ErrorBoundary>
   );
 }
 
