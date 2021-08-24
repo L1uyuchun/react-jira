@@ -12,8 +12,6 @@ export const useRequstUsers = () => {
 
   useMount(() => {
     run(http("users"));
-    // const { data: userList } = useRequstUsers()
-    // setUserList(userList || [])
   });
   return {
     data,
@@ -23,26 +21,28 @@ export const useRequstUsers = () => {
 export const useRequstProjects = (params: {}) => {
   const { run, data, status, loading } = useAsync<Projects[]>();
   const [entry, setEntry] = useState(() => () => {});
-  let signalArr: AbortController[] = [];
+  const signalArr = useRef<AbortController[]>([]);
   const http = useHttp();
 
   useEffect(() => {
-    if (signalArr.length) {
-      signalArr.forEach((item) => {
+    if (signalArr.current.length) {
+      signalArr.current.forEach((item) => {
         item.abort();
       });
     }
     let controller = new AbortController();
     // let signal = controller.signal;
-    signalArr.push(controller);
+    signalArr.current.push(controller);
     const requestPromise = () =>
-      http("projects", { data: cleanObject(params) });
+      http("projects", {
+        data: cleanObject(params),
+        signal: controller.signal,
+      });
     run(requestPromise());
     setEntry(() => () => run(requestPromise()));
     // const {data} = useRequstProjects(params)
     // setList(data || []);
-    // eslint-disable-next-line
-  }, [params]);
+  }, [params, http, run, signalArr]);
   return {
     data,
     status,

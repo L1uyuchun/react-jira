@@ -3,7 +3,7 @@ import { Select } from "antd";
 const { Option } = Select;
 
 type SelectProps = React.ComponentProps<typeof Select>;
-type optionPropsKey = "valueKey" | "textKey";
+// type optionPropsKey = "valueKey" | "textKey";
 
 interface bizSelectProps<K>
   extends Omit<SelectProps, "onChange" | "options" | "defaultValue"> {

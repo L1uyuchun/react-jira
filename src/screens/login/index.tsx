@@ -22,11 +22,6 @@ export const Login = () => {
   };
   return (
     <LoginPage>
-      {/*<Header>*/}
-      {/*  <LogoIcon width={'4rem'} height={'3rem'}/>*/}
-      {/*  <span css={{width: '100px', fontSize: '2.4rem'}}>jira</span>*/}
-      {/*</Header>*/}
-      {/*{err ? ( <Typography.Text type="danger">{err?.msg}</Typography.Text>) : ''}*/}
       <CardContainer>
         <Form
           onFinish={handleOnSubmit}

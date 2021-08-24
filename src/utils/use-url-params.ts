@@ -9,7 +9,7 @@ export const useUrlQueryParams = <T extends string>(keys: T[]) => {
     return keys.reduce((pre: { [key in T]: string }, currentKey: T) => {
       return { ...pre, [currentKey]: searchParams.get(currentKey) || "" };
     }, {} as { [key in T]: string });
-  }, [searchParams]);
+  }, [searchParams, keys]);
   const resetSearchPrams = (params: Partial<{ [key in T]: unknown }>) => {
     const o = cleanObject({
       ...Object.fromEntries(searchParams),

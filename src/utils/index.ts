@@ -28,3 +28,14 @@ export const useDocumentTitle = (
     };
   }, [title, keepOnmount, oldTitle]);
 };
+
+export const useMountedRef = () => {
+  const isMounted = useRef(false);
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  });
+  return [isMounted];
+};

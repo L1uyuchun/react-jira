@@ -25,7 +25,7 @@ interface listProps extends TableProps<Projects> {
 }
 
 export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
-  const { projectEdit, data, loading, status } = useEditProject();
+  const { projectEdit } = useEditProject();
   const editIsCollection = (
     value: string | number | null | undefined | [] | {},
     id: number
@@ -42,7 +42,7 @@ export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
           <Star
             checked={!!value}
             onChange={(value: number) => editIsCollection(value, row.id)}
-          ></Star>
+          />
         );
       },
       title: () => <Star checked={true} disabled></Star>,

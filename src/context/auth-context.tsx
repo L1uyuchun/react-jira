@@ -28,18 +28,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // const defaultToken = loginStorage.getToken() || "";
     try {
-      run(AuthCheck.isLogin())
-        .then((user) => {
-          setUser(user);
-        })
-        .catch();
-      // console.log(run(http("islogin")))
-      // http("islogin", ).then(setUser).catch(err => {
-      //    console.log(err)
-      //  })
+      run(AuthCheck.isLogin()).then((user) => {
+        setUser(user);
+      });
     } catch (err) {}
-    // eslint-disable-next-line
-  }, []);
+  }, [run]);
   return (
     <AuthContext.Provider value={{ user, login, loginOut }}>
       {loading ? (

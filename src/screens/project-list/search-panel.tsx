@@ -1,9 +1,9 @@
 import { ChangeEvent } from "react";
 import { User } from "./list";
-import { Input, Select } from "antd";
+import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { SelectBiz } from "@/components/select-biz";
-const { Option } = Select;
+import { Row } from "@/components/Row";
 interface SearchPanelProps {
   params: {
     name?: string;
@@ -11,12 +11,14 @@ interface SearchPanelProps {
   };
   setParams: (params: SearchPanelProps["params"]) => void;
   userList: User[];
+  addNewProject: () => void;
 }
 
 export const SearchPanel = ({
   params,
   setParams,
   userList,
+  addNewProject,
 }: SearchPanelProps) => {
   const changeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     setParams({
@@ -32,7 +34,11 @@ export const SearchPanel = ({
   };
   return (
     <SearchWraper>
-      <Title>项目列表</Title>
+      <Row justifyContent={"space-between"} alignItems={"center"}>
+        <Title>项目列表</Title>
+        <Button onClick={addNewProject}>新增项目</Button>
+      </Row>
+
       <SearchBox>
         <InputCom
           value={params.name}

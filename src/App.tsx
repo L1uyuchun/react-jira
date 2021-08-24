@@ -5,7 +5,7 @@ import "antd/dist/antd.less";
 import { Login } from "./screens/login";
 import { useAuth } from "./context/auth-context";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import {NotFound} from "@/screens/not-found";
 // import {Custom} from "@/screens/custom";
 // import {ProjectDetail} from "@/screens/project-detail";

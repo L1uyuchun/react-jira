@@ -1,15 +1,18 @@
 /** @jsxImportSource @emotion/react */
 // import { css, jsx } from '@emotion/react'
 import { SearchPanel } from "./search-panel";
-import { useState } from "react";
+// import { useState } from "react";
 import { ListTable } from "./list";
 import styled from "@emotion/styled";
 import {
   useRequstProjects,
   useRequstUsers,
 } from "@/screens/project-list/api-custom-hooks";
-import { cleanObject, useDocumentTitle } from "@/utils";
+import { useDocumentTitle } from "@/utils";
 import { useUrlQueryParams } from "@/utils/use-url-params";
+import { useMemo, useState } from "react";
+import { AddProject } from "@/screens/project-list/add-project";
+import { Button } from "antd";
 
 export const ProjectList = () => {
   useDocumentTitle("项目列表", false);
@@ -17,20 +20,27 @@ export const ProjectList = () => {
   //   name: "",
   //   personId: "",
   // });
-  const [params, setSearchPrams] = useUrlQueryParams<"name" | "personId">([
-    "name",
-    "personId",
-  ]);
-  const _params = { ...params, personId: Number(params.personId) || undefined };
-  // console.log(getSearchParams)
+  const [params, setSearchPrams] = useUrlQueryParams<"name" | "personId">(
+    useMemo(() => ["name", "personId"], [])
+  );
+  const _params = useMemo(() => {
+    return { ...params, personId: Number(params.personId) || undefined };
+  }, [params]);
   const { data: userList } = useRequstUsers();
-  const { data: list, loading, entry } = useRequstProjects(params);
+  // const list = undefined
+  //   const loading = false
+  //   const entry = () => {}
+  //   console.log(_params)
+  const { data: list, loading, entry } = useRequstProjects(_params);
+  const [drawerVisible, setDrawerVisible] = useState(false);
   return (
     <ProjectPage>
+      <Button onClick={() => setDrawerVisible(true)}>点击</Button>
       <SearchPanel
         params={_params}
         setParams={setSearchPrams}
         userList={userList || []}
+        addNewProject={() => setDrawerVisible(true)}
       />
       <ListTable
         list={list || []}
@@ -38,6 +48,10 @@ export const ProjectList = () => {
         loading={loading}
         entry={entry}
       />
+      <AddProject
+        drawerVisible={drawerVisible}
+        onClose={() => setDrawerVisible(false)}
+      ></AddProject>
     </ProjectPage>
   );
 };
