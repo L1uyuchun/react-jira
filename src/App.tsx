@@ -10,12 +10,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import {Custom} from "@/screens/custom";
 // import {ProjectDetail} from "@/screens/project-detail";
 import { Layout } from "@/screens/layout";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function App() {
   const { user } = useAuth();
+  const queryClient = new QueryClient();
   return (
     <ErrorBoundary>
-      <div id="content">{user ? <ViewRoutes /> : <Login />}</div>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <div id="content">{user ? <ViewRoutes /> : <Login />}</div>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

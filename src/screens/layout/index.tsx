@@ -12,6 +12,7 @@ import { ProjectList } from "@/screens/project-list";
 import { ProjectDetail } from "@/screens/project-detail";
 import { Custom } from "@/screens/custom";
 import { NotFound } from "@/screens/not-found";
+// import {useCreateProjectParam} from "@/screens/project-list/project-list-hooks";
 // const { SubMenu } = Menu;
 
 export const Layout = () => {
@@ -19,12 +20,12 @@ export const Layout = () => {
     <div>
       <HeaderCom />
       <Routes>
-        <Route path={"projectlist"} element={<ProjectList />}></Route>
-        <Route path={"project/:id/*"} element={<ProjectDetail />}></Route>
-        <Route path={"custom"} element={<Custom />}></Route>
+        <Route path={"projectlist"} element={<ProjectList />} />
+        <Route path={"project/:id/*"} element={<ProjectDetail />} />
+        <Route path={"custom"} element={<Custom />} />
 
-        <Navigate to={"/projectlist"}></Navigate>
-        <Route path={"*"} element={<NotFound />}></Route>
+        <Navigate to={"/projectlist"} replace={true} />
+        <Route path={"*"} element={<NotFound />} />
       </Routes>
     </div>
   );
@@ -75,13 +76,10 @@ const ProjectMent = () => {
   const menu = (
     <Menu>
       <Menu.ItemGroup title="收藏项目">
-        <Menu.Item>1st menu item</Menu.Item>
-        <Menu.Item>2nd menu item</Menu.Item>
+        <Menu.Item key={"1"}>1st menu item</Menu.Item>
+        <Menu.Item key={"2"}>2nd menu item</Menu.Item>
       </Menu.ItemGroup>
       <Menu.Divider />
-      <Menu.Item>
-        <span>新增项目</span>
-      </Menu.Item>
     </Menu>
   );
   return (

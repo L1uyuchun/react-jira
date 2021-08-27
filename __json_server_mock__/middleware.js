@@ -72,7 +72,6 @@ module.exports = (req, res, next) => {
       data: result,
     });
   } else if (req.method === "POST" && req.path === `/project/edit`) {
-    console.log(req.body);
     const params = req.body;
     projects.some((item, index) => {
       if (item.id === params.id) {
@@ -83,6 +82,49 @@ module.exports = (req, res, next) => {
     res.json({
       code: 200,
       data: [],
+    });
+  } else if (req.method === "POST" && req.path === "/project/getInfoById") {
+    if (!req.body.id) {
+      res.json({
+        code: 500,
+        data: {
+          msg: "'id' is required in parameter ",
+        },
+      });
+    } else {
+      res.json({
+        code: 200,
+        data: projects.filter((item) => item.id === req.body.id),
+      });
+    }
+  } else if (req.method === "POST" && req.path === "/project/saveProject") {
+    console.log(req.body);
+    if (req.body.id) {
+      const index = projects.findIndex((item) => item.id === req.body.id);
+      projects.splice(index, 1, req.body);
+    } else {
+      const item = { id: projects[projects.length - 1].id + 1, ...req.body };
+      projects.push(item);
+    }
+
+    res.json({
+      code: 200,
+      data: [],
+    });
+  } else if (req.method === "POST" && req.path === "/project/delete") {
+    if (req.body.id) {
+      const index = projects.findIndex((item) => item.id === req.body.id);
+      projects.splice(index, 1);
+    }
+
+    res.json({
+      code: 200,
+      data: [],
+    });
+  } else if (req.method === "POST" && req.path === "/getProjectInfo") {
+    res.json({
+      code: 200,
+      data: projects.filter((item) => item.id === req.body.id),
     });
   }
   next();

@@ -5,14 +5,16 @@ import { SearchPanel } from "./search-panel";
 import { ListTable } from "./list";
 import styled from "@emotion/styled";
 import {
+  useQueryProjectUrl,
   useRequstProjects,
   useRequstUsers,
-} from "@/screens/project-list/api-custom-hooks";
+} from "@/screens/project-list/project-list-hooks";
 import { useDocumentTitle } from "@/utils";
-import { useUrlQueryParams } from "@/utils/use-url-params";
-import { useMemo, useState } from "react";
+// import { useUrlQueryParams } from "@/utils/use-url-params";
+import { useMemo } from "react";
 import { AddProject } from "@/screens/project-list/add-project";
-import { Button } from "antd";
+// import { Button } from "antd";
+// type searchProps = ('name' | "personId")[]
 
 export const ProjectList = () => {
   useDocumentTitle("项目列表", false);
@@ -20,38 +22,31 @@ export const ProjectList = () => {
   //   name: "",
   //   personId: "",
   // });
-  const [params, setSearchPrams] = useUrlQueryParams<"name" | "personId">(
-    useMemo(() => ["name", "personId"], [])
-  );
-  const _params = useMemo(() => {
-    return { ...params, personId: Number(params.personId) || undefined };
-  }, [params]);
-  const { data: userList } = useRequstUsers();
+
+  const { params, setUrlParam } = useQueryProjectUrl();
+
+  const { userList } = useRequstUsers(true);
   // const list = undefined
   //   const loading = false
   //   const entry = () => {}
   //   console.log(_params)
-  const { data: list, loading, entry } = useRequstProjects(_params);
-  const [drawerVisible, setDrawerVisible] = useState(false);
+  const { data: list, loading } = useRequstProjects(params);
+  // const { drawerVisible } = useCreateProjectParam()
+  //   console.log(drawerVisible);
+
   return (
     <ProjectPage>
-      <Button onClick={() => setDrawerVisible(true)}>点击</Button>
       <SearchPanel
-        params={_params}
-        setParams={setSearchPrams}
+        params={params}
+        setParams={setUrlParam}
         userList={userList || []}
-        addNewProject={() => setDrawerVisible(true)}
       />
       <ListTable
         list={list || []}
         userList={userList || []}
         loading={loading}
-        entry={entry}
       />
-      <AddProject
-        drawerVisible={drawerVisible}
-        onClose={() => setDrawerVisible(false)}
-      ></AddProject>
+      <AddProject></AddProject>
     </ProjectPage>
   );
 };

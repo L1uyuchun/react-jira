@@ -2,7 +2,7 @@ import { Dropdown, Menu, Table } from "antd";
 import dayjs from "dayjs";
 import styled from "@emotion/styled";
 import { TableProps } from "antd/lib/table/Table";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Star } from "@/components/Star";
 import { useEditProject } from "@/screens/project-list/api-custom-hooks";
 import { EllipsisOutlined } from "@ant-design/icons";
@@ -24,20 +24,27 @@ export interface User {
 interface listProps extends TableProps<Projects> {
   list: Projects[];
   userList: User[];
-  entry: () => void;
 }
 
-export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
-  const { projectEdit } = useEditProject();
+export const ListTable = ({ list, userList, ...props }: listProps) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useEditStar();
+  const { deleteMutate } = useDeleteProjects();
+  const { setEditUrlParams } = useCreateProjectParam();
+  const navigate = useNavigate();
+
   const editIsCollection = (
     value: string | number | null | undefined | [] | {},
     id: number
   ) => {
-    projectEdit({ id, field: "isCollection", value }).then((res) => {
-      entry();
-    });
+    mutate({ id, field: "isCollection", value });
   };
-  const dispatch = useDispatch();
+  const deleteProject = (id: number) => {
+    deleteMutate({ id });
+  };
+  const goToProjectDetail = (row: Projects) => {
+    navigate(`/project/${row.id}/board`, { state: row });
+  };
   const columns = [
     {
       dataIndex: "isCollection",
@@ -55,7 +62,14 @@ export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
       title: "名称",
       dataIndex: "name",
       render: (value: string, row: Projects) => {
-        return <Link to={`/project/${row.id}`}>{value}</Link>;
+        return (
+          <div
+            onClick={() => goToProjectDetail(row)}
+            style={{ color: "#1890ff", cursor: "pointer" }}
+          >
+            {value}
+          </div>
+        );
       },
     },
     {
@@ -77,15 +91,23 @@ export const ListTable = ({ list, userList, entry, ...props }: listProps) => {
       },
     },
     {
-      render: (value: Date) => {
+      render: (value: Date, record: Projects) => {
         return (
           <Dropdown
             overlay={
               <Menu style={{ width: "100px" }}>
-                <Menu.Item onClick={() => dispatch(changeDrawerVisible(true))}>
+                <Menu.Item
+                  onClick={() => setEditUrlParams({ editProject: record.id })}
+                  key={"edit"}
+                >
                   编辑
                 </Menu.Item>
-                <Menu.Item>删除</Menu.Item>
+                <Menu.Item
+                  key={"delete"}
+                  onClick={() => deleteProject(record.id)}
+                >
+                  删除
+                </Menu.Item>
               </Menu>
             }
           >

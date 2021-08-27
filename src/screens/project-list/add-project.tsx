@@ -11,14 +11,46 @@ export const AddProject = () => {
   return (
     <Drawer
       width={"100%"}
-      title="Basic Drawer"
+      title={isEditProject ? "编辑项目" : "新建项目"}
       placement="right"
       onClose={() => dispatch(changeDrawerVisible(false))}
       visible={drawerVisible}
     >
-      <p>Some contents...</p>
-      <p>Some contents...</p>
-      <p>Some contents...</p>
+      <Form
+        style={{ width: "500px" }}
+        {...layout}
+        form={form}
+        name="control-hooks"
+        onFinish={onSave}
+      >
+        <Form.Item name="name" label="名称" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="organization"
+          label="部门"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item name="personId" label="负责人">
+          <SelectBiz
+            style={{ width: "100%" }}
+            options={userList || []}
+            optionProps={{
+              valueKey: "id",
+              textKey: "name",
+              key: "id",
+            }}
+            defaultOptionText={"负责人"}
+          />
+        </Form.Item>
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit" loading={isLoading}>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </Drawer>
   );
 };

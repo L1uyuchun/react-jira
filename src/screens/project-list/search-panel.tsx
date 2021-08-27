@@ -4,6 +4,7 @@ import { Button, Input } from "antd";
 import styled from "@emotion/styled";
 import { SelectBiz } from "@/components/select-biz";
 import { Row } from "@/components/Row";
+import { useCreateProjectParam } from "@/screens/project-list/project-list-hooks";
 interface SearchPanelProps {
   params: {
     name?: string;
@@ -11,14 +12,12 @@ interface SearchPanelProps {
   };
   setParams: (params: SearchPanelProps["params"]) => void;
   userList: User[];
-  addNewProject: () => void;
 }
 
 export const SearchPanel = ({
   params,
   setParams,
   userList,
-  addNewProject,
 }: SearchPanelProps) => {
   const changeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     setParams({
@@ -32,11 +31,12 @@ export const SearchPanel = ({
       personId: value,
     });
   };
+  const { createDrawerVisible } = useCreateProjectParam();
   return (
     <SearchWraper>
       <Row justifyContent={"space-between"} alignItems={"center"}>
         <Title>项目列表</Title>
-        <Button onClick={addNewProject}>新增项目</Button>
+        <Button onClick={() => createDrawerVisible(true)}>新增项目</Button>
       </Row>
 
       <SearchBox>
