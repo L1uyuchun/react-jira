@@ -1,20 +1,70 @@
-import { Drawer } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { changeDrawerVisible } from "./project-store-slice";
+import { Button, Drawer, Form, Input, Select } from "antd";
+import {
+  useCreateProjectParam,
+  useRequstUsers,
+  useSaveAddProjects,
+} from "@/screens/project-list/project-list-hooks";
+import { SelectBiz } from "@/components/select-biz";
+import { useMutation, useQueryClient } from "react-query";
+import { useEffect } from "react";
+import { Projects } from "@/screens/project-list/list";
+const { Option } = Select;
 
 export const AddProject = () => {
-  const drawerVisible = useSelector(
-    (state: RootState) => state.projectList.drawerVisible
+  const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+  };
+  const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+  };
+  const queryClient = useQueryClient();
+  const { userList } = useRequstUsers(false);
+  const [form] = Form.useForm();
+  const saveProjectFun = useSaveAddProjects();
+  const { mutate, isLoading } = useMutation(
+    "saveProjectFun",
+    (params: Partial<Projects>) => saveProjectFun(params),
+    {
+      onSuccess: () => {
+        handleCloseDrawer();
+        queryClient.invalidateQueries("projectList");
+      },
+    }
   );
-  const dispatch = useDispatch();
+
+  const {
+    drawerVisible,
+    createDrawerVisible,
+    setEditUrlParams,
+    editProjectInitData,
+    isEditProject,
+  } = useCreateProjectParam();
+  useEffect(() => {
+    if (drawerVisible) {
+      if (isEditProject) {
+        form.setFieldsValue(editProjectInitData);
+      } else {
+        form.resetFields();
+      }
+    }
+  }, [drawerVisible, editProjectInitData]);
+  const handleCloseDrawer = () => {
+    isEditProject
+      ? setEditUrlParams({ editProject: undefined })
+      : createDrawerVisible(false);
+  };
+  const onSave = (values: any) => {
+    mutate({ ...values, id: editProjectInitData?.id });
+  };
+
   return (
     <Drawer
       width={"100%"}
       title={isEditProject ? "编辑项目" : "新建项目"}
       placement="right"
-      onClose={() => dispatch(changeDrawerVisible(false))}
       visible={drawerVisible}
+      onClose={() => handleCloseDrawer()}
     >
       <Form
         style={{ width: "500px" }}
