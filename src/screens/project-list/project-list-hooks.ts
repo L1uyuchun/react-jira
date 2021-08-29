@@ -16,12 +16,17 @@ import dayjs from "dayjs";
 export const useRequstUsers = (fetchData: boolean) => {
   // const { run, data } = useAsync<User[]>();
   const http = useHttp();
-  const { data: userList } = useQuery<User[]>("users", () => http("users"), {
-    enabled: fetchData,
-  });
+  const { data: userList, isLoading } = useQuery<User[]>(
+    "users",
+    () => http("users"),
+    {
+      enabled: fetchData,
+    }
+  );
   // let result: User[] | undefined = []
   return {
     userList,
+    isLoading,
   };
 };
 

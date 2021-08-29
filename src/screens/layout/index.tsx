@@ -17,7 +17,7 @@ import { NotFound } from "@/screens/not-found";
 
 export const Layout = () => {
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       <HeaderCom />
       <Routes>
         <Route path={"projectlist"} element={<ProjectList />} />
@@ -90,7 +90,7 @@ const ProjectMent = () => {
 };
 const HeaderRow = styled(Row)`
   height: 60px;
-  box-shadow: 0 0px 0px 2px rgba(160, 158, 158, 0.1);
+  border-bottom: 2px solid #eee;
   padding: 0px 20px;
   font-size: 1.8rem;
 `;

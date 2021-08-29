@@ -4,3 +4,7 @@ export interface Tasks {
   processorId: number;
   labelName: string;
 }
+export interface ProjectTaskDetail {
+  status: string;
+  subTasks: { name: string; id: number }[] | null | [];
+}

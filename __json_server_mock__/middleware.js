@@ -1,4 +1,4 @@
-const { users, projects } = require("./data");
+const { users, projects, projectsDetails, taskType } = require("./data");
 
 module.exports = (req, res, next) => {
   if (req.method === "POST" && req.path === "/login") {
@@ -125,6 +125,18 @@ module.exports = (req, res, next) => {
     res.json({
       code: 200,
       data: projects.filter((item) => item.id === req.body.id),
+    });
+  } else if (req.method === "POST" && req.path === "/projectProcess") {
+    res.json({
+      code: 200,
+      data: projectsDetails,
+    });
+  } else if (req.method === "POST" && req.path === "/getTypeById") {
+    const data = taskType.filter((item) => item.id === req.body.id);
+    const result = data && data.length ? data[0] : null;
+    res.json({
+      code: 200,
+      data: result,
     });
   }
   next();

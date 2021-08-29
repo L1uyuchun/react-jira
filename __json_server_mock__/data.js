@@ -58,3 +58,75 @@ exports.projects = [
     isCollection: 0,
   },
 ];
+
+exports.projectsDetails = {
+  id: 1,
+  name: "骑手管理",
+  personId: 1,
+  organization: "外卖组",
+  creatTime: 1629163924000,
+  isCollection: 0,
+  board: [
+    {
+      status: "待完成", //
+      subTasks: [
+        {
+          name: "性能优化",
+          id: 1,
+        },
+      ],
+    },
+    {
+      status: "开发中", //
+      subTasks: [
+        {
+          name: "登录页面开发",
+          id: 2,
+        },
+        {
+          name: "项目页面开发",
+          id: 3,
+        },
+        {
+          name: "项目详情页面开发",
+          id: 4,
+        },
+        {
+          name: "布局页面开发",
+          id: 5,
+        },
+      ],
+    },
+    {
+      status: "已完成", //
+      subTasks: null,
+    },
+  ],
+};
+
+exports.taskType = [
+  {
+    id: 1,
+    type: "bug",
+  },
+  {
+    id: 2,
+    type: "task",
+  },
+  {
+    id: 3,
+    type: "bug",
+  },
+  {
+    id: 4,
+    type: "bug",
+  },
+  {
+    id: 5,
+    type: "task",
+  },
+  {
+    id: 6,
+    type: "task",
+  },
+];

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Projects } from "@/screens/project-list/list";
 import { useQueryClient } from "react-query";
 
@@ -50,14 +50,14 @@ export const useOptimisticUpdateConfig = (
   return {
     onSuccess: () => {},
     onMutate: async (requestParams: any) => {
-      const previousData = queryClient.getQueryData(["projectList", queryKey]);
+      const previousData = queryClient.getQueryData(queryKey);
       queryClient.setQueryData(queryKey, (old?: any) => {
         return setQueryDataCallBack(old, requestParams);
       });
       return { previousData };
     },
     onError: (err: Error, requestParams: any, context: any) => {
-      queryClient.setQueryData(["projectList", queryKey], context.previousData);
+      queryClient.setQueryData(queryKey, context.previousData);
     },
   };
 };
@@ -78,4 +78,15 @@ export const useDeleteOptimisticUpdate = (queryKey: any) => {
     (old?: any[], updateData?: any) =>
       old?.filter((item) => item.id !== updateData.id) || []
   );
+};
+
+export const useAddOptimicUpdate = (queryKey: any) => {
+  return useOptimisticUpdateConfig(queryKey, (old?: any, updateData?: any) => {
+    console.log(updateData);
+    old?.board.push({
+      status: updateData.status,
+      subTasks: updateData.subTasks || null,
+    });
+    return old;
+  });
 };
