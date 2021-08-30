@@ -12,6 +12,11 @@ import { ProjectList } from "@/screens/project-list";
 import { ProjectDetail } from "@/screens/project-detail";
 import { Custom } from "@/screens/custom";
 import { NotFound } from "@/screens/not-found";
+import {
+  useQueryProjectUrl,
+  useRequstProjects,
+} from "@/screens/project-list/project-list-hooks";
+import { Projects } from "@/screens/project-list/list";
 // import {useCreateProjectParam} from "@/screens/project-list/project-list-hooks";
 // const { SubMenu } = Menu;
 
@@ -73,11 +78,17 @@ const HeaderCom = () => {
   );
 };
 const ProjectMent = () => {
+  const { params } = useQueryProjectUrl();
+  const { data: list } = useRequstProjects(params);
+  const starProject = list?.filter(
+    (item: Projects & { isCollection: boolean }) => item.isCollection
+  );
   const menu = (
     <Menu>
       <Menu.ItemGroup title="收藏项目">
-        <Menu.Item key={"1"}>1st menu item</Menu.Item>
-        <Menu.Item key={"2"}>2nd menu item</Menu.Item>
+        {starProject?.map((item: Projects) => (
+          <Menu.Item key={item.id}>{item?.name}</Menu.Item>
+        ))}
       </Menu.ItemGroup>
       <Menu.Divider />
     </Menu>

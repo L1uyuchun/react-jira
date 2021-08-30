@@ -11,77 +11,95 @@ import { Input } from "antd";
 import {
   useAddSubTaskReq,
   useCreateBoard,
+  useDetailSearchParams,
   useGetType,
 } from "@/screens/project-detail/detail-custom-hooks";
-import {
+import React, {
   ChangeEvent,
   KeyboardEvent,
-  KeyboardEventHandler,
-  LegacyRef,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { projectDetailContext } from "@/screens/project-detail";
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
+import { Draggle, Drop, DropChild } from "@/utils/drag";
+type ProjectTaskProps = { projectProcessPart: ProjectTaskDetail } & {
+  index: number;
+  key: string;
+};
 
 export const ProjectTask = ({
   projectProcessPart,
   ...rest
-}: {
-  projectProcessPart?: ProjectTaskDetail;
-}) => {
-  if (projectProcessPart) {
-    return (
+}: ProjectTaskProps) => {
+  const onDragEnd = () => {};
+  return (
+    <Draggle
+      draggableId={projectProcessPart["status"]}
+      key={rest?.key}
+      index={rest?.index}
+    >
       <ProjectTaskWraper>
         <Header justifyContent={"space-between"}>
           <h1>{projectProcessPart?.["status"]}</h1>
           <EllipsisOutlined />
         </Header>
-        {(projectProcessPart?.subTasks || []).map((item) => (
-          <SubTask key={item.name}>
-            <div style={{ marginBottom: "10px" }}>{item.name}</div>
-            <SubTaskType id={item.id} />
-          </SubTask>
-        ))}
+        <Drop
+          droppableId={`droppableColumn${projectProcessPart["status"]}`}
+          direction="vertical"
+          type={"ROW"}
+        >
+          <DropChild style={{ minHeight: "5px" }}>
+            {(projectProcessPart?.subTasks || []).map((item, index) => (
+              <Draggle
+                draggableId={`drag${item.id}`}
+                key={item.id}
+                index={index}
+              >
+                <SubTask>
+                  <SubTaskName name={item.name} />
+                  <SubTaskType id={item.id} />
+                </SubTask>
+              </Draggle>
+            ))}
+          </DropChild>
+        </Drop>
+
         <AddSubTask boardType={projectProcessPart?.["status"]} />
       </ProjectTaskWraper>
-    );
+    </Draggle>
+  );
+};
+
+const SubTaskName = ({ name }: { name: string }) => {
+  const { searchParam } = useDetailSearchParams();
+  const searchTaskName = searchParam?.taskName;
+  if (!searchTaskName) {
+    return <div style={{ marginBottom: "10px" }}>{name}</div>;
   } else {
-    return <CreateBoard />;
+    const arr = name.split(searchTaskName);
+    return (
+      <div>
+        {arr.map((item, index) =>
+          item === arr[arr.length - 1] ? (
+            <span key={index}>item</span>
+          ) : (
+            <span key={index}>
+              <span>item</span>
+              <span style={{ color: "red" }}>searchTaskName</span>
+            </span>
+          )
+        )}
+      </div>
+    );
   }
 };
 
 const SubTaskType = ({ id }: { id: number }) => {
   const { data } = useGetType(id);
   return data?.type === "bug" ? <MinusSquareTwoTone /> : <CheckCircleTwoTone />;
-};
-
-const CreateBoard = () => {
-  const [inutValue, setInutValue] = useState("");
-  const project = useContext(projectDetailContext);
-  const { mutate } = useCreateBoard(project?.[0]?.id);
-  const onPressEnter = (event: KeyboardEvent<HTMLInputElement>) => {
-    mutate({
-      projectId: project?.[0]?.id,
-      status: (event.target as HTMLInputElement).value,
-    });
-    setInutValue("");
-  };
-  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setInutValue(evt.target.value);
-  };
-
-  return (
-    <ProjectTaskWraper>
-      <Input
-        placeholder={"新建看板名称"}
-        value={inutValue}
-        onPressEnter={onPressEnter}
-        onChange={onChange}
-      />
-    </ProjectTaskWraper>
-  );
 };
 
 const AddSubTask = ({ boardType, ...reset }: { boardType: string }) => {
@@ -125,7 +143,7 @@ const AddSubTask = ({ boardType, ...reset }: { boardType: string }) => {
   );
 };
 
-const ProjectTaskWraper = styled.div`
+export const ProjectTaskWraper = styled.div`
   flex: 1;
   padding: 10px;
   background-color: #eee;

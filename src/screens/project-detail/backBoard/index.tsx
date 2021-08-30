@@ -1,5 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import {
+  useCreateBoard,
   useDetailSearchParams,
   useProjectInfo,
   useQueryProjectProcess,
@@ -9,14 +10,26 @@ import { SelectBiz } from "@/components/select-biz";
 import { useRequstUsers } from "@/screens/project-list/project-list-hooks";
 import { useDebounce } from "@/utils/custom-hooks";
 import { cleanObject } from "@/utils";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ProjectTaskDetail, Tasks } from "@/screens/project-detail/type";
-import { ProjectTask } from "@/screens/project-detail/backBoard/projectKanban";
+import {
+  ProjectTask,
+  ProjectTaskWraper,
+} from "@/screens/project-detail/backBoard/projectKanban";
 import { Row } from "@/components/Row";
 import styled from "@emotion/styled";
 import { useUrlQueryParams } from "@/utils/use-url-params";
 import { FullPageWraper } from "@/components/Loading";
 import { projectDetailContext } from "@/screens/project-detail";
+import { DragDropContext } from "react-beautiful-dnd";
+import { Drop, DropChild } from "@/utils/drag";
 const { Option } = Select;
 
 export const BackBoard = () => {
@@ -45,6 +58,7 @@ export const BackBoard = () => {
       taskName: "",
     });
   };
+  const onDragEnd = () => {};
   if (reqUsrLoading || proProcessLoading) {
     return (
       <FullPageWraper>
@@ -52,6 +66,7 @@ export const BackBoard = () => {
       </FullPageWraper>
     );
   }
+  // @ts-ignore
   return (
     <KanbanWraper>
       <h5 style={{ fontSize: "24px", fontWeight: "bold", margin: "20px 0" }}>
@@ -100,12 +115,50 @@ export const BackBoard = () => {
         </Form.Item>
       </Form>
       <BoardWraper justifyContent={"space-between"}>
-        {(projectDetailList?.board || []).map((item: ProjectTaskDetail) => (
-          <ProjectTask key={item.status} projectProcessPart={item} />
-        ))}
-        <ProjectTask />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Drop droppableId="board" type="COLUMN" direction="horizontal">
+            <DropChild>
+              {(projectDetailList?.board || []).map(
+                (item: ProjectTaskDetail, index: number) => (
+                  <ProjectTask
+                    key={item.status}
+                    projectProcessPart={item}
+                    index={index}
+                  />
+                )
+              )}
+            </DropChild>
+          </Drop>
+        </DragDropContext>
+        <CreateBoard />
       </BoardWraper>
     </KanbanWraper>
+  );
+};
+const CreateBoard = () => {
+  const [inutValue, setInutValue] = useState("");
+  const project = useContext(projectDetailContext);
+  const { mutate } = useCreateBoard(project?.[0]?.id);
+  const onPressEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+    mutate({
+      projectId: project?.[0]?.id,
+      status: (event.target as HTMLInputElement).value,
+    });
+    setInutValue("");
+  };
+  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setInutValue(evt.target.value);
+  };
+
+  return (
+    <ProjectTaskWraper>
+      <Input
+        placeholder={"新建看板名称"}
+        value={inutValue}
+        onPressEnter={onPressEnter}
+        onChange={onChange}
+      />
+    </ProjectTaskWraper>
   );
 };
 

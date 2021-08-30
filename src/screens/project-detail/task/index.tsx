@@ -1,3 +1,7 @@
+import { useTask } from "@/screens/project-detail/detail-custom-hooks";
+
 export const Task = () => {
-  return <div>Task</div>;
+  const { data: taskList } = useTask();
+  console.log(taskList);
+  return <div>任务</div>;
 };

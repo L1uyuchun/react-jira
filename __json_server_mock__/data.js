@@ -23,7 +23,7 @@ exports.projects = [
     personId: 1,
     organization: "外卖组",
     creatTime: 1629163924000,
-    isCollection: 0,
+    isCollection: 1,
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ exports.projects = [
     personId: 2,
     organization: "团购组",
     creatTime: 1629163924000,
-    isCollection: 0,
+    isCollection: 1,
   },
   {
     id: 3,
@@ -39,7 +39,7 @@ exports.projects = [
     personId: 2,
     organization: "物料组",
     creatTime: 1629163924000,
-    isCollection: 0,
+    isCollection: 1,
   },
   {
     id: 4,

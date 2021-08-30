@@ -45,7 +45,7 @@ export const useDetailSearchParams = () => {
     useRef(["taskName", "taskGroup", "processorId", "labelName"]).current
   );
   const debounceParams = useDebounce(getSearchParams, 500);
-  const _searchParam = {
+  const _searchParam: Partial<Tasks> = {
     ...debounceParams,
     processorId: Number(getSearchParams.processorId),
   };
@@ -87,4 +87,9 @@ export const useAddSubTaskReq = () => {
       method: "POST",
     })
   );
+};
+
+export const useTask = () => {
+  const http = useHttp();
+  return useQuery("getTaskList", () => http("taskList"));
 };
